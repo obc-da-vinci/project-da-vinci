@@ -9,11 +9,11 @@ datasource db {
 }
 
 model Client {
-  id        String      @id @default(cuid())
-  name      String
-  email     String      @unique
-  password  String
-  Schedules Schedules[]
+  id           String         @id @default(cuid())
+  name         String
+  email        String         @unique
+  password     String
+  Appointments Appointments[]
 }
 
 model Professional {
@@ -23,17 +23,17 @@ model Professional {
   password     String
   Services     Services[]
   Availability Availability[]
-  Schedules    Schedules[]
+  Appointments Appointments[]
 }
 
 model Services {
-  id             String       @id @default(cuid())
-  professional   Professional @relation(fields: [professionalId], references: [id])
+  id             String         @id @default(cuid())
+  professional   Professional   @relation(fields: [professionalId], references: [id])
   professionalId String
-  serviceName    String       @unique
+  serviceName    String         @unique
   description    String
   price          Float
-  Schedules      Schedules[]
+  Appointments   Appointments[]
 }
 
 model Availability {
@@ -41,11 +41,11 @@ model Availability {
   professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
   dayOfWeek      Int // 1 (segunda-feira) até 7 (domingo)
-  startTime      String // Horário de início no formato "HH:mm"
-  endTime        String // Horário de término no formato "HH:mm"
+  startTime      Float // Horário de início no formato Float. Ex: 14.5 = 14:30
+  endTime        Float // Horário de término no formato Float. Ex: 15.5 = 15:30
 }
 
-model Schedules {
+model Appointments {
   id             String       @id @default(cuid())
   professional   Professional @relation(fields: [professionalId], references: [id])
   professionalId String
@@ -54,11 +54,15 @@ model Schedules {
   client         Client       @relation(fields: [clientId], references: [id])
   clientId       String
   status         Status       @default(PENDING)
+  date           DateTime     @db.Date()
+  startTime      Float // Horário de início no formato Float. Ex: 14.5 = 14:30
+  endTime        Float // Horário de término no formato Float. Ex: 15.5 = 15:30
   textMessage    String?
 }
 
 enum Status {
   PENDING
   ACCEPT
+  REJECTED
   CANCELED
 }
