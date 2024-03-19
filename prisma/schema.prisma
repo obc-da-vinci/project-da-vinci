@@ -7,3 +7,58 @@ datasource db {
   url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
+
+model Client {
+  id        String      @id @default(cuid())
+  name      String
+  email     String      @unique
+  password  String
+  Schedules Schedules[]
+}
+
+model Professional {
+  id           String         @id @default(cuid())
+  name         String
+  email        String         @unique
+  password     String
+  Services     Services[]
+  Availability Availability[]
+  Schedules    Schedules[]
+}
+
+model Services {
+  id             String       @id @default(cuid())
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  serviceName    String       @unique
+  description    String
+  price          Float
+  Schedules      Schedules[]
+}
+
+model Availability {
+  id             String       @id @default(cuid())
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  dayOfWeek      Int // 1 (segunda-feira) até 7 (domingo)
+  startTime      String // Horário de início no formato "HH:mm"
+  endTime        String // Horário de término no formato "HH:mm"
+}
+
+model Schedules {
+  id             String       @id @default(cuid())
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId String
+  service        Services     @relation(fields: [servicesId], references: [id])
+  servicesId     String
+  client         Client       @relation(fields: [clientId], references: [id])
+  clientId       String
+  status         Status       @default(PENDING)
+  textMessage    String?
+}
+
+enum Status {
+  PENDING
+  ACCEPT
+  CANCELED
+}
