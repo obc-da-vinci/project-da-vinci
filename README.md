@@ -5,7 +5,7 @@ Este é o repositório oficial do projeto desenvolvido pela equipe Da Vinci para
 ## Membros da Equipe
 - Thiago
 - Guilherme
-- Vic
+- Vircky
 
 ## Sobre o Projeto
 Nossa plataforma visa proporcionar uma experiência conveniente tanto para profissionais quanto para clientes. Com nosso sistema de agendamento, os profissionais podem gerenciar melhor seus horários disponíveis e os clientes podem facilmente marcar um horário para os serviços desejados.
