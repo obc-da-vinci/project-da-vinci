@@ -1,7 +1,7 @@
-export default function Home() {
+export default function SignInPage() {
   return (
     <main>
-      <h1>Public Route</h1>
+      <h1>Sign-in Page</h1>
     </main>
   )
 }
