@@ -3,9 +3,9 @@
 Este é o repositório oficial do projeto desenvolvido pela equipe Da Vinci para o Hackathon 5. Nosso objetivo foi criar uma plataforma onde profissionais podem cadastrar seus serviços e disponibilizar horários em uma agenda, facilitando o agendamento de serviços de forma fácil e online para os usuários.
 
 ## Membros da Equipe
-- Thiago - [Github](https://github.com/thgmagno) - [Linkedin](https://www.linkedin.com/in/thgmagno/)
-- Guilherme - [Github](https://github.com/GuiGranville) - [Linkedin](https://www.linkedin.com/in/guilherme-granville-bb9804194/)
-- Vircky - [Github](https://github.com/RodsVic) - [Linkedin](https://www.linkedin.com/)
+- Thiago Magno - [Github](https://github.com/thgmagno) - [Linkedin](https://www.linkedin.com/in/thgmagno/)
+- Guilherme Granville - [Github](https://github.com/GuiGranville) - [Linkedin](https://www.linkedin.com/in/guilherme-granville-bb9804194/)
+- Victor Rodrigues - [Github](https://github.com/RodsVic) - [Linkedin](https://www.linkedin.com/in/victor-braul-rodrigues/)
 
 ## Sobre o Projeto
 Nossa plataforma visa proporcionar uma experiência conveniente tanto para profissionais quanto para clientes. Com nosso sistema de agendamento, os profissionais podem gerenciar melhor seus horários disponíveis e os clientes podem facilmente marcar um horário para os serviços desejados.
