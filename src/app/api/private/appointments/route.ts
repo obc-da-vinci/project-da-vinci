@@ -30,5 +30,5 @@ export async function PATCH(request: Request) {
     return Response.json({ message: 'Bad request' })
   }
 
-  return Response.json({ message: 'success' })
+  return Response.json({ message: `id: ${id} changed to status: ${status}` })
 }

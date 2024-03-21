@@ -1,6 +1,6 @@
 // GET /services - Listar serviços do profissional.
 export async function GET() {
-  return Response.json({ serices: 'list' })
+  return Response.json({ services: 'list' })
 }
 
 // DELETE /services/:id - Excluir um serviço.

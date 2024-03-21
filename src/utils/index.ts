@@ -30,3 +30,12 @@ export const Hours = [
   { value: 17.5, label: '17:30' },
   { value: 18, label: '18:00' },
 ]
+
+export const CapitalizeString = (value: string) => {
+  const words = value.split(' ')
+  const capitalizeWords = words.map((word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  })
+
+  return capitalizeWords.join(' ')
+}
