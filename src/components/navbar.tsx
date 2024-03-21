@@ -98,10 +98,14 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
               </DropdownTrigger>
               <DropdownMenu aria-label="Menu Actions">
                 <DropdownItem className="p-0">
-                  <Item href="#" label="Solutions for You" small />
+                  <Item href="/solutions" label="Solutions for You" small />
                 </DropdownItem>
                 <DropdownItem className="p-0">
-                  <Item href="#" label="Find Professionals" small />
+                  <Item
+                    href="/professionals"
+                    label="Find Professionals"
+                    small
+                  />
                 </DropdownItem>
                 <DropdownItem className="p-0">
                   <Link href="/sign-in">
