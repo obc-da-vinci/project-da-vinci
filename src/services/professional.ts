@@ -7,13 +7,16 @@ export async function getServices() {
   const token = cookies().get('obc-da-vinci')?.value
   if (!token) return
 
-  const response = await fetch('http://localhost:3000/api/private/services', {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-type': 'application/json',
+  const response = await fetch(
+    'https://project-da-vinci.vercel.app/api/private/services',
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+      },
     },
-  })
+  )
 
   return response.json()
 }
@@ -24,7 +27,7 @@ export async function deleteServices(id: string) {
   if (!token) return
 
   const response = await fetch(
-    `http://localhost:3000/api/private/services?id=${id}`,
+    `https://project-da-vinci.vercel.app/api/private/services?id=${id}`,
     {
       method: 'DELETE',
       headers: {
@@ -43,7 +46,7 @@ export async function getAppointments() {
   if (!token) return
 
   const response = await fetch(
-    `http://localhost:3000/api/private/appointments`,
+    `https://project-da-vinci.vercel.app/api/private/appointments`,
     {
       method: 'GET',
       headers: {
@@ -69,7 +72,7 @@ export async function changeStatusAppointments({
   if (!token) return
 
   const response = await fetch(
-    `http://localhost:3000/api/private/appointments?id=${id}&status=${status}`,
+    `https://project-da-vinci.vercel.app/api/private/appointments?id=${id}&status=${status}`,
     {
       method: 'PATCH',
       headers: {
@@ -88,7 +91,7 @@ export async function getSelfAvailability() {
   if (!token) return
 
   const response = await fetch(
-    `http://localhost:3000/api/private/availability`,
+    `https://project-da-vinci.vercel.app/api/private/availability`,
     {
       method: 'GET',
       headers: {
