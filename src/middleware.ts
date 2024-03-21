@@ -6,11 +6,12 @@ export async function middleware(request: Request) {
   const token = auth?.slice(7)
   const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 
-  if (!token) return NextResponse.error()
+  if (!token) return NextResponse.json({ message: 'Unauthorized' })
 
   const { payload } = await jose.jwtVerify(token, secret)
 
-  if (!payload || !payload.sub) return NextResponse.error()
+  if (!payload || !payload.sub)
+    return NextResponse.json({ message: 'Unauthorized' })
 
   return NextResponse.next()
 }
