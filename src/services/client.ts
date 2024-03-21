@@ -1,26 +1,36 @@
 // Obter disponibilidade do profissional
 export async function getAvailability() {
-  const response = await fetch(
+  const res = await fetch(
     'https://project-da-vinci.vercel.app/api/availability',
   )
 
-  return response.json()
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
 }
 
 // Obter lista de profissionais cadastrados
 export async function getProfessionals() {
-  const response = await fetch(
+  const res = await fetch(
     'https://project-da-vinci.vercel.app/api/professionals',
   )
 
-  return response.json()
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
 }
 
 // Obter lista de serviços ofertados
 export async function getSolutions() {
-  const response = await fetch(
-    'https://project-da-vinci.vercel.app/api/solutions',
-  )
+  const res = await fetch('https://project-da-vinci.vercel.app/api/solutions')
 
-  return response.json()
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
 }
