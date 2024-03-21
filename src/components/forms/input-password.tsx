@@ -18,10 +18,10 @@ export default function InputPassword({
   const [isVisible, setIsVisible] = useState(false)
 
   const EyeIcon = () => (
-    <FaEye className="text-default-400 pointer-events-none text-2xl" />
+    <FaEye className="pointer-events-none text-2xl text-default-400" />
   )
   const EyeSlashIcon = () => (
-    <FaEyeSlash className="text-default-400 pointer-events-none text-2xl" />
+    <FaEyeSlash className="pointer-events-none text-2xl text-default-400" />
   )
 
   const toggleVisibility = () => setIsVisible(!isVisible)
