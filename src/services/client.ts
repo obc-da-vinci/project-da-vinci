@@ -26,7 +26,9 @@ export async function getProfessionals() {
 
 // Obter lista de serviços ofertados
 export async function getSolutions() {
-  const res = await fetch('https://project-da-vinci.vercel.app/api/solutions')
+  const res = await fetch('https://project-da-vinci.vercel.app/api/solutions', {
+    next: { tags: ['services'] },
+  })
 
   if (!res.ok) {
     throw new Error('Failed to fetch data')
