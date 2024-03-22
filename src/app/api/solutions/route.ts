@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const data = await prisma.services.findMany({
+      include: { professional: { select: { name: true } } },
       orderBy: { serviceName: 'asc' },
     })
 

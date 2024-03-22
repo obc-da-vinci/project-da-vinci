@@ -58,6 +58,7 @@ export async function registerProfessional(
     }
   }
 
+  revalidateTag('professionals')
   redirect('/dashboard')
 }
 

@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={`${montserrat.className} min-h-screen pb-12`}>
         <Providers>{children}</Providers>
       </body>
     </html>
