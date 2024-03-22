@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 
-// Listar serviços do profissional ✅
+// Listar serviços do profissional
 export async function getServices() {
   const token = cookies().get('obc-da-vinci')?.value
   if (!token) return
@@ -15,6 +15,7 @@ export async function getServices() {
         Authorization: `Bearer ${token}`,
         'Content-type': 'application/json',
       },
+      next: { tags: ['services'] },
     },
   )
 
@@ -25,7 +26,7 @@ export async function getServices() {
   return res.json()
 }
 
-// Excluir um serviço ✅
+// Excluir um serviço
 export async function deleteServices(id: string) {
   const token = cookies().get('obc-da-vinci')?.value
   if (!token) return
@@ -38,6 +39,7 @@ export async function deleteServices(id: string) {
         Authorization: `Bearer ${token}`,
         'Content-type': 'application/json',
       },
+      next: { tags: ['services'] },
     },
   )
 
@@ -48,7 +50,7 @@ export async function deleteServices(id: string) {
   return res.json()
 }
 
-// Listar agendamentos do profissional. ✅
+// Listar agendamentos do profissional.
 export async function getAppointments() {
   const token = cookies().get('obc-da-vinci')?.value
   if (!token) return
@@ -71,7 +73,7 @@ export async function getAppointments() {
   return res.json()
 }
 
-// Alterar o status do agendamento (aceitar/rejeitar), ✅
+// Alterar o status do agendamento (aceitar/rejeitar),
 // disparando uma notificação por e-mail ao cliente.
 export async function changeStatusAppointments({
   id,
@@ -91,6 +93,7 @@ export async function changeStatusAppointments({
         Authorization: `Bearer ${token}`,
         'Content-type': 'application/json',
       },
+      next: { tags: ['appointments'] },
     },
   )
 
@@ -101,7 +104,7 @@ export async function changeStatusAppointments({
   return res.json()
 }
 
-// Listar agendamentos do proprio profissional. ✅
+// Listar agendamentos do proprio profissional.
 export async function getSelfAvailability() {
   const token = cookies().get('obc-da-vinci')?.value
   if (!token) return

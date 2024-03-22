@@ -6,10 +6,16 @@ import { useFormStatus } from 'react-dom'
 interface Props {
   title: string
   wFull?: boolean
+  rounded?: boolean
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
 }
 
-export default function ButtonFormSubmit({ title, wFull, color }: Props) {
+export default function ButtonFormSubmit({
+  title,
+  wFull,
+  color,
+  rounded,
+}: Props) {
   const { pending } = useFormStatus()
 
   return (
@@ -17,7 +23,7 @@ export default function ButtonFormSubmit({ title, wFull, color }: Props) {
       type="submit"
       isLoading={pending}
       color={color}
-      className={`${wFull && 'w-full'} rounded-full`}
+      className={`${wFull && 'w-full'} ${rounded && 'rounded-full'}`}
     >
       {title}
     </Button>

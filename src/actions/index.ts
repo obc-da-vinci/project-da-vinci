@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import {
   AuthenticateProfessionalSchema,
   RegisterProfessionalSchema,
+  ServiceSchema,
 } from '@/lib/schemas'
 import {
   AppointmentFormState,
@@ -11,10 +12,11 @@ import {
   ProfessionalFormState,
   ServiceFormState,
 } from '@/lib/states'
-import { CapitalizeString } from '@/utils'
+import { CapitalizeString, clearValue } from '@/utils'
 import { Professional } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 import * as jose from 'jose'
+import { revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -105,7 +107,43 @@ export async function createService(
   formState: ServiceFormState,
   formData: FormData,
 ): Promise<ServiceFormState> {
-  return { errors: {} }
+  const parsed = ServiceSchema.safeParse({
+    professionalId: formData.get('professionalId'),
+    serviceId: formData.get('serviceId'),
+    serviceName: formData.get('serviceName'),
+    description: formData.get('description'),
+    price: formData.get('price'),
+  })
+
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors }
+  }
+
+  const price = clearValue(parsed.data.price)
+
+  try {
+    await prisma.services.upsert({
+      where: { id: parsed.data.serviceId },
+      create: {
+        professionalId: parsed.data.professionalId,
+        serviceName: parsed.data.serviceName,
+        description: parsed.data.description,
+        price,
+      },
+      update: {
+        serviceName: parsed.data.serviceName,
+        description: parsed.data.description,
+        price,
+      },
+    })
+  } catch (e) {
+    if (e) {
+      return { errors: { _form: 'An error ocurred.' } }
+    }
+  }
+
+  revalidateTag('services')
+  return { success: true, errors: {} }
 }
 
 // Atualizar um serviço existente.

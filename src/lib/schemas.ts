@@ -12,6 +12,8 @@ export const AuthenticateProfessionalSchema = z.object({
 })
 
 export const ServiceSchema = z.object({
+  professionalId: z.string().cuid(),
+  serviceId: z.string().optional().default(''),
   serviceName: z.string().min(1, 'A name for the service is required.'),
   description: z
     .string()

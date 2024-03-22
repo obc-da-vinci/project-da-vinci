@@ -30,7 +30,7 @@ model Services {
   id             String         @id @default(cuid())
   professional   Professional   @relation(fields: [professionalId], references: [id])
   professionalId String
-  serviceName    String         @unique
+  serviceName    String
   description    String
   price          Float
   Appointments   Appointments[]

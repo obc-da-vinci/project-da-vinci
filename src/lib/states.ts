@@ -8,6 +8,7 @@ export interface ProfessionalFormState {
 }
 
 export interface ServiceFormState {
+  success?: boolean
   errors: {
     serviceName?: string[]
     description?: string[]

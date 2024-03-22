@@ -39,3 +39,8 @@ export const CapitalizeString = (value: string) => {
 
   return capitalizeWords.join(' ')
 }
+
+export const clearValue = (value: string) => {
+  const clearedValue = parseFloat(value.replace('$ ', '').replace(',', ''))
+  return clearedValue
+}
