@@ -41,7 +41,7 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
           {/* Small */}
           <nav className="flex justify-between border-b p-2 md:hidden">
             <Logotipo href="/" />
-            {/* <Dropdown>
+            <Dropdown>
               <DropdownTrigger>
                 <button className="mr-2">
                   <FcMenu size={26} />
@@ -66,7 +66,7 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
                   </button>
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown> */}
+            </Dropdown>
           </nav>
 
           {/* Medium */}
@@ -90,7 +90,7 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
           {/* Small */}
           <nav className="flex justify-between border-b p-2 md:hidden">
             <Logotipo href="/" />
-            {/* <Dropdown>
+            <Dropdown>
               <DropdownTrigger>
                 <button className="mr-2">
                   <FcMenu size={26} />
@@ -115,7 +115,7 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
                   </Link>
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown> */}
+            </Dropdown>
           </nav>
 
           {/* Medium */}
