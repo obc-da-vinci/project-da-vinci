@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   const auth = request.headers.get('Authorization')
   const token = auth?.slice(7)
 
-  if (!token) return null
+  if (!token) return Response.json({ error: 'unauthorized' })
 
   const { sub } = await openSessionToken(token)
 
