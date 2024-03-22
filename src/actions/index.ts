@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma'
 import {
   AuthenticateProfessionalSchema,
+  AvailabilitySchema,
   RegisterProfessionalSchema,
   ServiceSchema,
 } from '@/lib/schemas'
@@ -160,6 +161,29 @@ export async function createAvailability(
   formState: AvailabilityFormState,
   formData: FormData,
 ): Promise<AvailabilityFormState> {
+  const parsed = AvailabilitySchema.safeParse({
+    startAt: {
+      1: formData.get('monStartAt'),
+      2: formData.get('tueStartAt'),
+      3: formData.get('wedStartAt'),
+      4: formData.get('thuStartAt'),
+      5: formData.get('friStartAt'),
+      6: formData.get('satStartAt'),
+    },
+    endAt: {
+      1: formData.get('monEndAt'),
+      2: formData.get('tueEndAt'),
+      3: formData.get('wedEndAt'),
+      4: formData.get('thuEndAt'),
+      5: formData.get('friEndAt'),
+      6: formData.get('satEndAt'),
+    },
+  })
+
+  if (!parsed.success) {
+    return { errors: { _form: '' } }
+  }
+
   return { errors: {} }
 }
 

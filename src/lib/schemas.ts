@@ -22,14 +22,13 @@ export const ServiceSchema = z.object({
 })
 
 export const AvailabilitySchema = z.object({
-  dayOfWeek: z.number().min(1).max(7),
-  startTime: z.number().min(0).max(24),
-  endTime: z.number().min(0).max(24),
+  startAt: z.record(z.string().optional().nullable()),
+  endAt: z.record(z.string().optional().nullable()),
 })
 
 export const AppointmentSchema = z.object({
   date: z.string().min(1, 'Please enter a date.'),
-  startTime: z.number().min(0).max(24),
-  endTime: z.number().min(0).max(24),
+  startAt: z.number().min(0).max(24),
+  endAt: z.number().min(0).max(24),
   textMessage: z.string().max(100, 'Exceeded the 100-character limit.'),
 })
