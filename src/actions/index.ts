@@ -88,7 +88,10 @@ export async function authenticateProfessional(
       }
     }
 
-    const passwordMatch = bcrypt.compare(user.password, parsed.data.password)
+    const passwordMatch = await bcrypt.compare(
+      user.password,
+      parsed.data.password,
+    )
 
     if (!passwordMatch) {
       return {
