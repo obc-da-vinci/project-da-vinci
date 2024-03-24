@@ -110,7 +110,7 @@ export async function getSelfAvailability() {
   if (!token) return
 
   const res = await fetch(
-    `https://project-da-vinci.vercel.app/api/private/
+    `https://project-da-vinci.vercel.app/api/private/`,
     {
       method: 'GET',
       headers: {
