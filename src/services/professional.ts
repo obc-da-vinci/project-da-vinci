@@ -109,17 +109,14 @@ export async function getSelfAvailability() {
   const token = cookies().get('obc-da-vinci')?.value
   if (!token) return
 
-  const res = await fetch(
-    `https://project-da-vinci.vercel.app/api/private/`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-type': 'application/json',
-      },
-      next: { tags: ['availability'] },
+  const res = await fetch(`https://project-da-vinci.vercel.app/api/private/`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-type': 'application/json',
     },
-  )
+    next: { tags: ['availability'] },
+  })
 
   if (!res.ok) {
     throw new Error('Failed to fetch data')
