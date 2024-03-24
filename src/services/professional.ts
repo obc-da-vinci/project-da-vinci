@@ -2,6 +2,15 @@
 
 import { cookies } from 'next/headers'
 
+type WeekDay = 1 | 2 | 3 | 4 | 5 | 6
+
+type WeekDayAvailability = {
+  [key in WeekDay]?: {
+    startAt?: number
+    endAt?: number
+  }
+}
+
 // Listar serviços do profissional
 export async function getServices() {
   const token = cookies().get('obc-da-vinci')?.value
@@ -126,4 +135,26 @@ export async function getSelfAvailability() {
   }
 
   return res.json()
+}
+
+// Criar disponibilidade do profissional.
+export async function createAvailability(availability: WeekDayAvailability) {
+  const token = cookies().get('obc-da-vinci')?.value
+  if (!token) return { message: 'unauthorized' }
+
+  const res = await fetch(
+    `https://project-da-vinci.vercel.app/api/private/availability`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(availability),
+    },
+  )
+
+  if (!res.ok) {
+    return { message: 'error: failed to fetch data' }
+  }
 }

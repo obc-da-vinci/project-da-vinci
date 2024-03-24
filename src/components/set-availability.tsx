@@ -4,6 +4,8 @@ import { useAvailability } from '@/hooks/useAvailability'
 import { Button } from '@nextui-org/react'
 import { SyntheticEvent, useState } from 'react'
 import WeekdayButton from './weekday-button'
+import { createAvailability } from '@/services/professional'
+import { useRouter } from 'next/navigation'
 
 type WeekDay = 1 | 2 | 3 | 4 | 5 | 6
 
@@ -21,6 +23,8 @@ export default function SetAvailability({
 }) {
   const { availability, handleToggleDay, handleTimeChange } = useAvailability()
   const [errorMessage, setErrorMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const [mon, setMon] = useState(false)
   const [tue, setTue] = useState(false)
@@ -29,7 +33,7 @@ export default function SetAvailability({
   const [fri, setFri] = useState(false)
   const [sat, setSat] = useState(false)
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
 
     if (Object.entries(availability).length) {
@@ -37,7 +41,18 @@ export default function SetAvailability({
 
       if (hasConflict) return
 
-      alert('prossiga...')
+      try {
+        setLoading(true)
+        await createAvailability(availability).then(() =>
+          router.push('/availability'),
+        )
+      } catch (e) {
+        if (e instanceof Error) {
+          setErrorMessage(e.message)
+        }
+      } finally {
+        setLoading(false)
+      }
     } else {
       setErrorMessage('Select a date at least one day.')
     }
@@ -123,7 +138,7 @@ export default function SetAvailability({
             {errorMessage}
           </p>
         )}
-        <Button type="submit" color="primary">
+        <Button type="submit" color="primary" isLoading={loading}>
           Save
         </Button>
       </form>
