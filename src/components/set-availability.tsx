@@ -1,18 +1,17 @@
 'use client'
 
-import { Hours, WeekDays } from '@/utils'
-import { Select, SelectItem } from '@nextui-org/react'
-import { useState } from 'react'
-import ButtonFormSubmit from './forms/button-form-submit'
-import { useFormState } from 'react-dom'
-import * as actions from '@/actions'
+import { useAvailability } from '@/hooks/useAvailability'
+import { Button } from '@nextui-org/react'
+import { SyntheticEvent, useState } from 'react'
+import WeekdayButton from './weekday-button'
 
-type WeekDays = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat'
+type WeekDay = 1 | 2 | 3 | 4 | 5 | 6
 
-interface WeekDayButtonProps {
-  weekDay: WeekDays
-  isActive: boolean
-  onClick: () => void
+type WeekDayAvailability = {
+  [key in WeekDay]?: {
+    startAt?: number
+    endAt?: number
+  }
 }
 
 export default function SetAvailability({
@@ -20,9 +19,8 @@ export default function SetAvailability({
 }: {
   professionalId: string
 }) {
-  const [formState, action] = useFormState(actions.createAvailability, {
-    errors: {},
-  })
+  const { availability, handleToggleDay, handleTimeChange } = useAvailability()
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [mon, setMon] = useState(false)
   const [tue, setTue] = useState(false)
@@ -31,97 +29,103 @@ export default function SetAvailability({
   const [fri, setFri] = useState(false)
   const [sat, setSat] = useState(false)
 
-  const WeekDayButton = ({
-    weekDay,
-    isActive,
-    onClick,
-  }: WeekDayButtonProps) => (
-    <div className="mb-2 flex items-center">
-      <button
-        type="button"
-        onClick={onClick}
-        className={`flex-1 self-stretch rounded-lg border font-medium ${isActive ? 'bg-blue-500 text-white' : 'text-neutral-500'}`}
-      >
-        {weekDay[0].toUpperCase().concat(weekDay.slice(1))}
-      </button>
-      <Select
-        name={`${weekDay}StartAt`}
-        className="mx-2 flex-1"
-        label="start at"
-        variant="bordered"
-        isDisabled={!isActive}
-      >
-        {Hours.map((hour) => (
-          <SelectItem key={hour.value} value={hour.value}>
-            {hour.label}
-          </SelectItem>
-        ))}
-      </Select>
-      <Select
-        name={`${weekDay}EndAt`}
-        className="flex-1"
-        label="end at"
-        variant="bordered"
-        isDisabled={!isActive}
-      >
-        {Hours.map((hour) => (
-          <SelectItem key={hour.value} value={hour.value}>
-            {hour.label}
-          </SelectItem>
-        ))}
-      </Select>
-    </div>
-  )
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault()
+
+    if (Object.entries(availability).length) {
+      const hasConflict = checkForConflicts(availability)
+
+      if (hasConflict) return
+
+      alert('prossiga...')
+    } else {
+      setErrorMessage('Select a date at least one day.')
+    }
+  }
+
+  const checkForConflicts = (availability: WeekDayAvailability): boolean => {
+    return Object.values(availability).some((value) => {
+      const startAt = value.startAt
+      const endAt = value.endAt
+
+      if (!startAt || (startAt && !endAt)) {
+        setErrorMessage(
+          'Please provide the required information as the form cannot be left empty.',
+        )
+        return true
+      }
+
+      if (startAt && endAt && startAt >= endAt) {
+        setErrorMessage(
+          'Double check the entry values. Start time cannot be greater than end time.',
+        )
+        return true
+      }
+
+      return setErrorMessage('')
+    })
+  }
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <form
-        action={action}
+        onSubmit={handleSubmit}
         className="flex w-full max-w-lg flex-col rounded-lg border-2 p-2 shadow-md"
-        style={{ gridTemplateColumns: '1fr 2fr' }}
       >
         <span className="my-4 text-center text-neutral-600">
           Click on a day below to set your availability
         </span>
         <input type="hidden" name="professionalId" value={professionalId} />
-        <WeekDayButton
-          weekDay="mon"
+        <WeekdayButton
           isActive={mon}
           onClick={() => setMon(!mon)}
+          weekDay={1}
+          handleToggleDay={handleToggleDay}
+          handleTimeChange={handleTimeChange}
         />
-        <WeekDayButton
-          weekDay="tue"
+        <WeekdayButton
           isActive={tue}
           onClick={() => setTue(!tue)}
+          weekDay={2}
+          handleToggleDay={handleToggleDay}
+          handleTimeChange={handleTimeChange}
         />
-        <WeekDayButton
-          weekDay="wed"
+        <WeekdayButton
           isActive={wed}
           onClick={() => setWed(!wed)}
+          weekDay={3}
+          handleToggleDay={handleToggleDay}
+          handleTimeChange={handleTimeChange}
         />
-        <WeekDayButton
-          weekDay="thu"
+        <WeekdayButton
           isActive={thu}
           onClick={() => setThu(!thu)}
+          weekDay={4}
+          handleToggleDay={handleToggleDay}
+          handleTimeChange={handleTimeChange}
         />
-        <WeekDayButton
-          weekDay="fri"
+        <WeekdayButton
           isActive={fri}
           onClick={() => setFri(!fri)}
+          weekDay={5}
+          handleToggleDay={handleToggleDay}
+          handleTimeChange={handleTimeChange}
         />
-        <WeekDayButton
-          weekDay="sat"
+        <WeekdayButton
           isActive={sat}
           onClick={() => setSat(!sat)}
+          weekDay={6}
+          handleToggleDay={handleToggleDay}
+          handleTimeChange={handleTimeChange}
         />
-        {formState?.errors._form && (
-          <p className="rounded-lg border border-red-400 bg-red-200 p-1.5 text-sm text-red-700">
-            {formState.errors._form}
+        {errorMessage && (
+          <p className="mb-4 rounded-lg border border-red-400 bg-red-200 p-1.5 text-red-700 shadow">
+            {errorMessage}
           </p>
         )}
-        <div className="my-4">
-          <ButtonFormSubmit title="Save" wFull color="primary" />
-        </div>
+        <Button type="submit" color="primary">
+          Save
+        </Button>
       </form>
     </div>
   )
