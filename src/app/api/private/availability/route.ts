@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import * as jose from 'jose'
+import { prisma } from '@/lib/prisma'
 
 // GET /availability - Listar disponibilidade do proprio profissional.
 export async function GET(request: Request) {
@@ -13,7 +14,9 @@ export async function GET(request: Request) {
 
   if (!payload || !payload.sub) return NextResponse.error()
 
-  return Response.json({
-    availability: `show availability of professional: ${payload.sub}`,
+  const availability = await prisma.availability.findMany({
+    where: { professionalId: payload.sub },
   })
+
+  return Response.json({ availability })
 }

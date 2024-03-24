@@ -15,7 +15,11 @@ interface WeekDayButtonProps {
   onClick: () => void
 }
 
-export default function SetAvailability() {
+export default function SetAvailability({
+  professionalId,
+}: {
+  professionalId: string
+}) {
   const [formState, action] = useFormState(actions.createAvailability, {
     errors: {},
   })
@@ -79,6 +83,7 @@ export default function SetAvailability() {
         <span className="my-4 text-center text-neutral-600">
           Click on a day below to set your availability
         </span>
+        <input type="hidden" name="professionalId" value={professionalId} />
         <WeekDayButton
           weekDay="mon"
           isActive={mon}
@@ -109,6 +114,11 @@ export default function SetAvailability() {
           isActive={sat}
           onClick={() => setSat(!sat)}
         />
+        {formState?.errors._form && (
+          <p className="rounded-lg border border-red-400 bg-red-200 p-1.5 text-sm text-red-700">
+            {formState.errors._form}
+          </p>
+        )}
         <div className="my-4">
           <ButtonFormSubmit title="Save" wFull color="primary" />
         </div>
