@@ -96,7 +96,7 @@ export async function authenticateProfessional(
 
     if (!passwordMatch) {
       return {
-        errors: { email: [`Password doesn't match.`] },
+        errors: { password: [`Password doesn't match.`] },
       }
     }
 
