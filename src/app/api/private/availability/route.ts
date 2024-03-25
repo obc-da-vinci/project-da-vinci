@@ -59,6 +59,7 @@ export async function POST(request: NextRequest) {
         },
       })
       revalidateTag('availability')
+      return NextResponse.next()
     } else {
       await prisma.availability.create({
         data: {
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
         },
       })
       revalidateTag('availability')
+      return NextResponse.next()
     }
   })
 }
