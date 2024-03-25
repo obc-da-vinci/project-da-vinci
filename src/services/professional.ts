@@ -143,8 +143,7 @@ export async function createAvailability(availability: WeekDayAvailability) {
   if (!token) return { created: false, message: 'unauthorized' }
 
   const res = await fetch(
-    // `https://project-da-vinci.vercel.app/api/private/availability`,
-    `http://localhost:3000/api/private/availability`,
+    `https://project-da-vinci.vercel.app/api/private/availability`,
     {
       method: 'POST',
       headers: {
