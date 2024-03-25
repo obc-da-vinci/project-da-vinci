@@ -36,16 +36,22 @@ export default function SetAvailability({
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault()
 
-    if (Object.entries(availability).length) {
-      const hasConflict = checkForConflicts(availability)
+    if (Object.entries(availability).length === 0) {
+      return setErrorMessage('Select a date at least one day.')
+    }
 
-      if (hasConflict) return
+    const hasConflict = checkForConflicts(availability)
 
+    if (!hasConflict) {
       try {
         setLoading(true)
-        await createAvailability(availability).then(() =>
-          router.push('/availability'),
-        )
+        const { created, message } = await createAvailability(availability)
+
+        if (created) {
+          router.push('/availability')
+        } else {
+          return setErrorMessage(message)
+        }
       } catch (e) {
         if (e instanceof Error) {
           setErrorMessage(e.message)
@@ -53,32 +59,31 @@ export default function SetAvailability({
       } finally {
         setLoading(false)
       }
-    } else {
-      setErrorMessage('Select a date at least one day.')
     }
   }
 
   const checkForConflicts = (availability: WeekDayAvailability): boolean => {
-    return Object.values(availability).some((value) => {
-      const startAt = value.startAt
-      const endAt = value.endAt
+    for (const dayAvailability of Object.values(availability)) {
+      const startAt = dayAvailability.startAt
+      const endAt = dayAvailability.endAt
 
-      if (!startAt || (startAt && !endAt)) {
+      if (!startAt || !endAt) {
         setErrorMessage(
           'Please provide the required information as the form cannot be left empty.',
         )
         return true
       }
 
-      if (startAt && endAt && startAt >= endAt) {
+      if (startAt >= endAt) {
         setErrorMessage(
           'Double check the entry values. Start time cannot be greater than end time.',
         )
         return true
       }
+    }
 
-      return setErrorMessage('')
-    })
+    setErrorMessage('')
+    return false
   }
 
   return (

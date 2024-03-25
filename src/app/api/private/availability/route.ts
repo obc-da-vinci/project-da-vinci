@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import * as jose from 'jose'
 import { prisma } from '@/lib/prisma'
 import { revalidateTag } from 'next/cache'
@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 }
 
 // POST /availability - Criar disponibilidade do profissional
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const auth = request.headers.get('Authorization')
   const token = auth?.slice(7)
   const secret = new TextEncoder().encode(process.env.JWT_SECRET)
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
           professionalId,
         },
       })
-      revalidateTag('/availability')
+      revalidateTag('availability')
     } else {
       await prisma.availability.create({
         data: {
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
           professionalId,
         },
       })
-      revalidateTag('/availability')
+      revalidateTag('availability')
     }
   })
 }

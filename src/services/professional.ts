@@ -140,7 +140,7 @@ export async function getSelfAvailability() {
 // Criar disponibilidade do profissional.
 export async function createAvailability(availability: WeekDayAvailability) {
   const token = cookies().get('obc-da-vinci')?.value
-  if (!token) return { message: 'unauthorized' }
+  if (!token) return { created: false, message: 'unauthorized' }
 
   const res = await fetch(
     `https://project-da-vinci.vercel.app/api/private/availability`,
@@ -155,8 +155,8 @@ export async function createAvailability(availability: WeekDayAvailability) {
   )
 
   if (!res.ok) {
-    return { message: 'error: failed to fetch data' }
+    return { created: false, message: 'error: failed to fetch data' }
   }
 
-  return { message: 'success' }
+  return { created: true, message: 'success' }
 }
