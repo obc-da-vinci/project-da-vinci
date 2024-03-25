@@ -1,6 +1,6 @@
+import PreviousButton from '@/components/previous-button'
 import SetAvailability from '@/components/set-availability'
 import { useSession } from '@/hooks/useSession'
-import Link from 'next/link'
 
 export default async function SetSchedulesPage() {
   const user = await useSession()
@@ -9,7 +9,7 @@ export default async function SetSchedulesPage() {
 
   return (
     <div>
-      <Link href="/availability">Previous</Link>
+      <PreviousButton path="/availability" />
       <SetAvailability professionalId={user.id} />
     </div>
   )

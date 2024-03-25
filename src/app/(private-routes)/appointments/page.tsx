@@ -1,4 +1,5 @@
 import ButtonAppointmentStatus from '@/components/appointment-status-button'
+import PageTitle from '@/components/page-title'
 import { getAppointments } from '@/services/professional'
 
 export default async function AppointmentsPage() {
@@ -6,7 +7,7 @@ export default async function AppointmentsPage() {
 
   return (
     <div>
-      <h1>Appointments Page</h1>
+      <PageTitle title="Manage Appointment Requests" />
       {appointments && <pre>{JSON.stringify(appointments, null, 2)}</pre>}
       <div className="flex gap-5">
         <ButtonAppointmentStatus id="acb123" status="ACCEPT" />
