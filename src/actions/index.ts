@@ -20,7 +20,6 @@ import * as jose from 'jose'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { start } from 'repl'
 
 // Registrar novo profissional.
 export async function registerProfessional(
@@ -90,8 +89,8 @@ export async function authenticateProfessional(
     }
 
     const passwordMatch = await bcrypt.compare(
-      user.password,
       parsed.data.password,
+      user.password,
     )
 
     if (!passwordMatch) {
