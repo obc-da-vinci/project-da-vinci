@@ -59,7 +59,6 @@ export async function registerProfessional(
     }
   }
 
-  revalidateTag('professionals')
   redirect('/dashboard')
 }
 
@@ -147,7 +146,6 @@ export async function createService(
     }
   }
 
-  revalidateTag('services')
   return { success: true, errors: {} }
 }
 
@@ -157,78 +155,6 @@ export async function updateService(
   formData: FormData,
 ): Promise<ServiceFormState> {
   return { errors: {} }
-}
-
-// Definir nova disponibilidade.
-export async function createAvailability(
-  formState: AvailabilityFormState,
-  formData: FormData,
-): Promise<AvailabilityFormState> {
-  const parsed = AvailabilitySchema.safeParse({
-    professionalId: formData.get('professionalId'),
-    1: [formData.get('monStartAt'), formData.get('monEndAt')],
-    2: [formData.get('tueStartAt'), formData.get('tueEndAt')],
-    3: [formData.get('wedStartAt'), formData.get('wedEndAt')],
-    4: [formData.get('thuStartAt'), formData.get('thuEndAt')],
-    5: [formData.get('friStartAt'), formData.get('friEndAt')],
-    6: [formData.get('satStartAt'), formData.get('satEndAt')],
-  })
-
-  if (!parsed.success) {
-    return { errors: { _form: '' } }
-  }
-
-  const data = {
-    1: parsed.data[1],
-    2: parsed.data[2],
-    3: parsed.data[3],
-    4: parsed.data[4],
-    5: parsed.data[5],
-    6: parsed.data[6],
-  }
-
-  const promises = Object.entries(data)
-    .filter(([_, value]) => {
-      const startTime = parseFloat(String(value[0]))
-      const endTime = parseFloat(String(value[1]))
-      return startTime && endTime && startTime < endTime
-    })
-    .map(async ([key, value]) => {
-      const professionalId = parsed.data.professionalId
-      const dayOfWeek = parseInt(key)
-      const startTime = parseFloat(String(value[0]))
-      const endTime = parseFloat(String(value[1]))
-
-      const existingAvailability = await prisma.availability.findFirst({
-        where: { professionalId, dayOfWeek },
-      })
-
-      if (existingAvailability) {
-        return prisma.availability.update({
-          where: { id: existingAvailability.id },
-          data: {
-            dayOfWeek,
-            startTime,
-            endTime,
-            professionalId: parsed.data.professionalId,
-          },
-        })
-      } else {
-        return prisma.availability.create({
-          data: {
-            dayOfWeek,
-            startTime,
-            endTime,
-            professionalId: parsed.data.professionalId,
-          },
-        })
-      }
-    })
-
-  Promise.all(promises)
-
-  revalidatePath('/availability')
-  redirect('/availability')
 }
 
 // Atualizar disponibilidade existente.

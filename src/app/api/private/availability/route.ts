@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import * as jose from 'jose'
 import { prisma } from '@/lib/prisma'
-import { revalidateTag } from 'next/cache'
+import { revalidatePath } from 'next/cache'
 
 // GET /availability - Listar disponibilidade do proprio profissional.
 export async function GET(request: Request) {
@@ -72,6 +72,6 @@ export async function POST(request: Request) {
     }),
   )
 
-  revalidateTag('availability')
+  revalidatePath('/availability')
   return NextResponse.json({})
 }
