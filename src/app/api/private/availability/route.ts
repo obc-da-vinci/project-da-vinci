@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import * as jose from 'jose'
 import { prisma } from '@/lib/prisma'
 import { revalidateTag } from 'next/cache'
@@ -24,7 +24,7 @@ export async function GET(request: Request) {
 }
 
 // POST /availability - Criar disponibilidade do profissional
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const auth = request.headers.get('Authorization')
   const token = auth?.slice(7)
   const secret = new TextEncoder().encode(process.env.JWT_SECRET)
@@ -39,38 +39,39 @@ export async function POST(request: NextRequest) {
   const professionalId = payload.sub
   const requestBody: { startAt: number; endAt: number }[] = await request.json()
 
-  Object.entries(requestBody).map(async ([key, value]) => {
-    const dayOfWeek = Number(key)
-    const startTime = value.startAt
-    const endTime = value.endAt
+  await Promise.all(
+    Object.entries(requestBody).map(async ([key, value]) => {
+      const dayOfWeek = Number(key)
+      const startTime = value.startAt
+      const endTime = value.endAt
 
-    const existingAvailability = await prisma.availability.findFirst({
-      where: { professionalId, dayOfWeek },
-    })
+      const existingAvailability = await prisma.availability.findFirst({
+        where: { professionalId, dayOfWeek },
+      })
 
-    if (existingAvailability) {
-      await prisma.availability.update({
-        where: { id: existingAvailability.id },
-        data: {
-          dayOfWeek,
-          startTime,
-          endTime,
-          professionalId,
-        },
-      })
-      revalidateTag('availability')
-      return NextResponse.json({ success: true })
-    } else {
-      await prisma.availability.create({
-        data: {
-          dayOfWeek,
-          startTime,
-          endTime,
-          professionalId,
-        },
-      })
-      revalidateTag('availability')
-      return NextResponse.json({ success: true })
-    }
-  })
+      if (existingAvailability) {
+        await prisma.availability.update({
+          where: { id: existingAvailability.id },
+          data: {
+            dayOfWeek,
+            startTime,
+            endTime,
+            professionalId,
+          },
+        })
+      } else {
+        await prisma.availability.create({
+          data: {
+            dayOfWeek,
+            startTime,
+            endTime,
+            professionalId,
+          },
+        })
+      }
+    }),
+  )
+
+  revalidateTag('availability')
+  return NextResponse.next()
 }
