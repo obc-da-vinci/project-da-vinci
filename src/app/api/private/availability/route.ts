@@ -73,5 +73,5 @@ export async function POST(request: Request) {
   )
 
   revalidateTag('availability')
-  return NextResponse.next()
+  return NextResponse.json({})
 }
