@@ -28,7 +28,7 @@ model Professional {
 
 model Services {
   id             String         @id @default(cuid())
-  professional   Professional   @relation(fields: [professionalId], references: [id])
+  professional   Professional   @relation(fields: [professionalId], references: [id], onDelete: Cascade)
   professionalId String
   serviceName    String
   description    String
@@ -38,7 +38,7 @@ model Services {
 
 model Availability {
   id             String       @id @default(cuid())
-  professional   Professional @relation(fields: [professionalId], references: [id])
+  professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
   professionalId String
   dayOfWeek      Int // 1 (segunda-feira) até 7 (domingo)
   startTime      Float // Horário de início no formato Float. Ex: 14.5 = 14:30
@@ -47,11 +47,11 @@ model Availability {
 
 model Appointments {
   id             String       @id @default(cuid())
-  professional   Professional @relation(fields: [professionalId], references: [id])
+  professional   Professional @relation(fields: [professionalId], references: [id], onDelete: Cascade)
   professionalId String
-  service        Services     @relation(fields: [servicesId], references: [id])
+  service        Services     @relation(fields: [servicesId], references: [id], onDelete: Cascade)
   servicesId     String
-  client         Client       @relation(fields: [clientId], references: [id])
+  client         Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId       String
   status         Status       @default(PENDING)
   date           DateTime     @db.Date()

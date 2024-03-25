@@ -157,4 +157,6 @@ export async function createAvailability(availability: WeekDayAvailability) {
   if (!res.ok) {
     return { message: 'error: failed to fetch data' }
   }
+
+  return { message: 'success' }
 }
