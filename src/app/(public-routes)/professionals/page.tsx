@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { AiOutlineSchedule } from 'react-icons/ai'
 
 export default async function ProfessionalsPage() {
-  const professionals = await getProfessionals()
+  const { professionals } = await getProfessionals()
 
   const Render = ({ professionals }: { professionals: Professional[] }) => (
     <div className="grid sm:grid-cols-2 md:grid-cols-3">
