@@ -1,8 +1,8 @@
+import { actions } from '@/actions'
 import PageTitle from '@/components/page-title'
-import { getSolutions } from '@/services/client'
 
 export default async function SolutionsPage() {
-  const solutions = await getSolutions()
+  const solutions = await actions.client.getServices()
 
   return (
     <>

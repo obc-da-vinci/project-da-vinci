@@ -1,16 +1,9 @@
 'use client'
 
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
 import Link from 'next/link'
-import { FcMenu } from 'react-icons/fc'
 import Logotipo from './logotipo'
-import { endSession } from '@/actions'
+import { actions } from '@/actions'
 
 export default function Navbar({ authenticated }: { authenticated?: boolean }) {
   const Item = ({
@@ -41,6 +34,8 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
           {/* Small */}
           <nav className="flex justify-between border-b p-2 md:hidden">
             <Logotipo href="/" />
+
+            {/* TODO: separar componente */}
             {/* <Dropdown>
               <DropdownTrigger>
                 <button className="mr-2">
@@ -78,7 +73,7 @@ export default function Navbar({ authenticated }: { authenticated?: boolean }) {
               <Item href="/appointments" label="Appointments" />
             </ul>
             <Button
-              onClick={() => endSession()}
+              onClick={() => actions.auth.endSession()}
               className="hover:bg-red-500 hover:text-white"
             >
               Sing out

@@ -1,7 +1,5 @@
-import { Hours } from '@/utils'
+import { Hours, WeekDay } from '@/lib/types'
 import { Select, SelectItem } from '@nextui-org/react'
-
-type WeekDay = 1 | 2 | 3 | 4 | 5 | 6
 
 interface Props {
   isActive: boolean

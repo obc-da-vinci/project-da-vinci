@@ -1,9 +1,11 @@
+import { actions } from '@/actions'
 import ButtonAppointmentStatus from '@/components/appointment-status-button'
 import PageTitle from '@/components/page-title'
-import { getAppointments } from '@/services/professional'
+import { useSession } from '@/hooks/useSession'
 
 export default async function AppointmentsPage() {
-  const appointments = await getAppointments()
+  const user = await useSession()
+  const appointments = await actions.user.getAppointments(user.id)
 
   return (
     <div>

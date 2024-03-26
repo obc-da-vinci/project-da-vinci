@@ -4,17 +4,8 @@ import { useAvailability } from '@/hooks/useAvailability'
 import { Button } from '@nextui-org/react'
 import { SyntheticEvent, useState } from 'react'
 import WeekdayButton from './weekday-button'
-import { createAvailability } from '@/services/professional'
-import { useRouter } from 'next/navigation'
-
-type WeekDay = 1 | 2 | 3 | 4 | 5 | 6
-
-type WeekDayAvailability = {
-  [key in WeekDay]?: {
-    startAt?: number
-    endAt?: number
-  }
-}
+import { actions } from '@/actions'
+import { WeekDayAvailability } from '@/lib/types'
 
 export default function SetAvailability({
   professionalId,
@@ -24,7 +15,6 @@ export default function SetAvailability({
   const { availability, handleToggleDay, handleTimeChange } = useAvailability()
   const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   const [mon, setMon] = useState(false)
   const [tue, setTue] = useState(false)
@@ -45,13 +35,7 @@ export default function SetAvailability({
     if (!hasConflict) {
       try {
         setLoading(true)
-        const { created, message } = await createAvailability(availability)
-
-        if (created) {
-          router.push('/availability')
-        } else {
-          return setErrorMessage(message)
-        }
+        await actions.user.createAvailability(availability, professionalId)
       } catch (e) {
         if (e instanceof Error) {
           setErrorMessage(e.message)

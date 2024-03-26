@@ -11,9 +11,9 @@ import {
   Button,
 } from '@nextui-org/react'
 import { Availability } from '@prisma/client'
-import { Hours } from '@/utils'
 import Link from 'next/link'
 import { BsClock } from 'react-icons/bs'
+import { Hours } from '@/lib/types'
 
 export default function TableAvailability({
   availability,

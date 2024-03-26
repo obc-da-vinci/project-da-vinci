@@ -1,13 +1,11 @@
+import { actions } from '@/actions'
 import UpsertServiceModal from '@/components/modal/upsert-service'
 import PageTitle from '@/components/page-title'
 import { useSession } from '@/hooks/useSession'
-import { getServices } from '@/services/professional'
 
 export default async function ServicesPage() {
-  const myServices = await getServices()
   const user = await useSession()
-
-  if (!user) return null
+  const myServices = await actions.user.getServices(user.id)
 
   return (
     <>

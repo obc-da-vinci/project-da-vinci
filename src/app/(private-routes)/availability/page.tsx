@@ -1,9 +1,11 @@
+import { actions } from '@/actions'
 import PageTitle from '@/components/page-title'
 import TableAvailability from '@/components/table-availability'
-import { getSelfAvailability } from '@/services/professional'
+import { useSession } from '@/hooks/useSession'
 
 export default async function AvailabilityPage() {
-  const { availability } = await getSelfAvailability()
+  const user = await useSession()
+  const availability = await actions.user.getAvailability(user.id)
 
   return (
     <div>

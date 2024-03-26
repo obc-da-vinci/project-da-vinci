@@ -1,13 +1,11 @@
+import { actions } from '@/actions'
 import PageTitle from '@/components/page-title'
-import { getProfessionals } from '@/services/client'
 import { Professional } from '@prisma/client'
 import Link from 'next/link'
 import { AiOutlineSchedule } from 'react-icons/ai'
-import { unstable_noStore as noStore } from 'next/cache'
 
 export default async function ProfessionalsPage() {
-  noStore()
-  const { professionals } = await getProfessionals()
+  const professionals = await actions.client.getProfessionals()
 
   const Render = ({ professionals }: { professionals: Professional[] }) => (
     <div className="grid sm:grid-cols-2 md:grid-cols-3">
@@ -32,7 +30,7 @@ export default async function ProfessionalsPage() {
   return (
     <>
       <PageTitle title="Find your Specialist: Explore Professionals and Schedule Services" />
-      {professionals && <Render professionals={professionals} />}
+      <Render professionals={professionals} />
     </>
   )
 }
