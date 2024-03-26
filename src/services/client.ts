@@ -24,6 +24,19 @@ export async function getProfessionals() {
   return res.json()
 }
 
+// Obter lista de profissionais cadastrados
+export async function getProfessionalById(id: string) {
+  const res = await fetch(
+    `https://project-da-vinci.vercel.app/api/professionals?id=${id}`,
+  )
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  return res.json()
+}
+
 // Obter lista de serviços ofertados
 export async function getSolutions() {
   const res = await fetch('https://project-da-vinci.vercel.app/api/solutions')

@@ -1,6 +1,8 @@
 import PageTitle from '@/components/page-title'
 import { getProfessionals } from '@/services/client'
 import { Professional } from '@prisma/client'
+import Link from 'next/link'
+import { AiOutlineSchedule } from 'react-icons/ai'
 
 export default async function ProfessionalsPage() {
   const professionals = await getProfessionals()
@@ -14,7 +16,12 @@ export default async function ProfessionalsPage() {
         >
           <span className="font-medium">{p.name}</span>
           <span>{p.email}</span>
-          <button className="p-2">Select</button>
+          <Link
+            href={`/professionals/${p.id}`}
+            className="my-5 flex items-center justify-center rounded-lg border bg-neutral-200 p-2 font-medium"
+          >
+            <AiOutlineSchedule className="mr-1.5" size={18} /> Availability
+          </Link>
         </div>
       ))}
     </div>
