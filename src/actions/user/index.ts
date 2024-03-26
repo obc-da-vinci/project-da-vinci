@@ -8,7 +8,7 @@ import { clearValue } from '@/utils'
 import { revalidatePath } from 'next/cache'
 
 // Adicionar um novo serviço.
-export async function createService(
+export async function upsertService(
   formState: ServiceFormState,
   formData: FormData,
 ): Promise<ServiceFormState> {

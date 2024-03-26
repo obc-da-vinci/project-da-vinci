@@ -16,7 +16,7 @@ import { NumericFormat } from 'react-number-format'
 import ButtonFormSubmit from '../forms/button-form-submit'
 import { Services } from '@prisma/client'
 import { useFormState } from 'react-dom'
-import * as actions from '@/actions'
+import { actions } from '@/actions'
 
 export default function UpsertServiceModal({
   professionalId,
@@ -26,7 +26,7 @@ export default function UpsertServiceModal({
   service?: Services
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [formState, action] = useFormState(actions.createService, {
+  const [formState, action] = useFormState(actions.user.upsertService, {
     success: false,
     errors: {},
   })
