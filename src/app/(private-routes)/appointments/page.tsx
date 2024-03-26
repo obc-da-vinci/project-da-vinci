@@ -5,6 +5,7 @@ import { useSession } from '@/hooks/useSession'
 
 export default async function AppointmentsPage() {
   const user = await useSession()
+  if (!user) return null
   const appointments = await actions.user.getAppointments(user.id)
 
   return (

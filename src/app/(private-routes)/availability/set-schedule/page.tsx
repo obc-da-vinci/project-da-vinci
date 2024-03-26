@@ -4,6 +4,7 @@ import { useSession } from '@/hooks/useSession'
 
 export default async function SetSchedulesPage() {
   const user = await useSession()
+  if (!user) return null
 
   return (
     <div>

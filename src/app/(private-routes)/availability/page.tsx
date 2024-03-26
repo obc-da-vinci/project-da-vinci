@@ -5,6 +5,8 @@ import { useSession } from '@/hooks/useSession'
 
 export default async function AvailabilityPage() {
   const user = await useSession()
+  if (!user) return null
+
   const availability = await actions.user.getAvailability(user.id)
 
   return (

@@ -5,6 +5,8 @@ import { useSession } from '@/hooks/useSession'
 
 export default async function ServicesPage() {
   const user = await useSession()
+  if (!user) return null
+
   const myServices = await actions.user.getServices(user.id)
 
   return (
