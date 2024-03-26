@@ -28,7 +28,9 @@ export default async function ProfessionalsPage() {
           ))}
         </>
       ) : (
-        <p className="text-center">No registration found</p>
+        <p className="my-5 text-center text-lg sm:col-span-2 md:col-span-3">
+          No registration found
+        </p>
       )}
     </div>
   )
