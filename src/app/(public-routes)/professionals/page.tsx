@@ -9,36 +9,28 @@ export default async function ProfessionalsPage() {
 
   const Render = ({ professionals }: { professionals: Professional[] }) => (
     <div className="grid sm:grid-cols-2 md:grid-cols-3">
-      {professionals ? (
-        <>
-          {professionals.map((p) => (
-            <div
-              key={p.id}
-              className="m-2 inline-flex flex-col rounded-lg border bg-neutral-100 p-2 shadow-md"
-            >
-              <span className="font-medium">{p.name}</span>
-              <span>{p.email}</span>
-              <Link
-                href={`/professionals/${p.id}`}
-                className="my-5 flex items-center justify-center rounded-lg border bg-neutral-200 p-2 font-medium"
-              >
-                <AiOutlineSchedule className="mr-1.5" size={18} /> Availability
-              </Link>
-            </div>
-          ))}
-        </>
-      ) : (
-        <p className="my-5 text-center text-lg sm:col-span-2 md:col-span-3">
-          No registration found
-        </p>
-      )}
+      {professionals.map((p) => (
+        <div
+          key={p.id}
+          className="m-2 inline-flex flex-col rounded-lg border bg-neutral-100 p-2 shadow-md"
+        >
+          <span className="font-medium">{p.name}</span>
+          <span>{p.email}</span>
+          <Link
+            href={`/professionals/${p.id}`}
+            className="my-5 flex items-center justify-center rounded-lg border bg-neutral-200 p-2 font-medium"
+          >
+            <AiOutlineSchedule className="mr-1.5" size={18} /> Availability
+          </Link>
+        </div>
+      ))}
     </div>
   )
 
   return (
     <>
       <PageTitle title="Find your Specialist: Explore Professionals and Schedule Services" />
-      <Render professionals={professionals} />
+      {professionals && <Render professionals={professionals} />}
     </>
   )
 }

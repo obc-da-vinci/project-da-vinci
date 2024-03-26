@@ -10,8 +10,9 @@ export default async function ProfessionalAvailabilityPage({
 
   return (
     <div>
-      <PageTitle title={`Schedule an appointment with ${professional.name}`} />
+      <PageTitle title="Schedule an appointment" />
       <h1>{params.id}</h1>
+      {professional && <p>{professional.name}</p>}
     </div>
   )
 }
