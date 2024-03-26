@@ -1,13 +1,12 @@
 import PageTitle from '@/components/page-title'
 import { getProfessionalById } from '@/services/client'
-import { Professional } from '@prisma/client'
 
 export default async function ProfessionalAvailabilityPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const professional: Professional = await getProfessionalById(params.id)
+  const { professional } = await getProfessionalById(params.id)
 
   return (
     <div>

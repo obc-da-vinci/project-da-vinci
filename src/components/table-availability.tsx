@@ -37,8 +37,6 @@ export default function TableAvailability({
     endAtArray[available.dayOfWeek - 1] = endLabel
   })
 
-  console.log('aqui.. ', startAtArray, endAtArray)
-
   return (
     <>
       <div className="mx-auto max-w-lg">
