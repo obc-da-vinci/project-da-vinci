@@ -11,7 +11,12 @@ export async function GET(request: Request) {
         where: { id },
       })
 
-      if (!data) return Response.json({ professional: 'not found' })
+      if (!data) {
+        return Response.json(
+          { error: 'Professional not found' },
+          { status: 404 },
+        )
+      }
 
       const professional = {
         id: data.id,
@@ -34,6 +39,10 @@ export async function GET(request: Request) {
       return Response.json({ professionals })
     }
   } catch (e) {
-    return Response.json({ error: 'api error' })
+    console.error('Error fetching professionals:', e)
+    return Response.json(
+      { error: e instanceof Error ? e.message : 'API error' },
+      { status: 500 },
+    )
   }
 }
