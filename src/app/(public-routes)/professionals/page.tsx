@@ -3,8 +3,10 @@ import { getProfessionals } from '@/services/client'
 import { Professional } from '@prisma/client'
 import Link from 'next/link'
 import { AiOutlineSchedule } from 'react-icons/ai'
+import { unstable_noStore as noStore } from 'next/cache'
 
 export default async function ProfessionalsPage() {
+  noStore()
   const { professionals } = await getProfessionals()
 
   const Render = ({ professionals }: { professionals: Professional[] }) => (
