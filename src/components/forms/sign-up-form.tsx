@@ -3,11 +3,11 @@
 import { Input, Link } from '@nextui-org/react'
 import ButtonFormSubmit from './button-form-submit'
 import InputPassword from './input-password'
-import * as actions from '@/actions'
 import { useFormState } from 'react-dom'
+import { actions } from '@/actions'
 
 export default function SignUpForm() {
-  const [formState, action] = useFormState(actions.registerProfessional, {
+  const [formState, action] = useFormState(actions.auth.registerProfessional, {
     errors: {},
   })
 
