@@ -13,7 +13,7 @@ export async function GET() {
       email: item.email,
     }))
 
-    return Response.json(professionals)
+    return Response.json({ professionals })
   } catch (e) {
     return Response.json({ error: 'api error' })
   }
