@@ -30,7 +30,7 @@ export default function WeekdayButton({
         defaultValue={startTime}
         disabled={!isActive}
         name={`${weekDay}StartAt`}
-        className="flex-1 rounded-lg border p-2 font-medium"
+        className="flex-1 rounded-lg border border-b-2 bg-slate-200 p-2 font-medium text-blue-600 disabled:bg-white disabled:text-neutral-500"
       >
         <option value="" selected disabled>
           Start at
@@ -43,7 +43,7 @@ export default function WeekdayButton({
         defaultValue={endTime}
         disabled={!isActive}
         name={`${weekDay}EndAt`}
-        className="flex-1 rounded-lg border p-2 font-medium"
+        className="flex-1 rounded-lg border border-b-2 bg-slate-200 p-2 font-medium text-blue-600 disabled:bg-white disabled:text-neutral-500"
       >
         <option value="" selected disabled>
           End at
