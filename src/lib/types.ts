@@ -30,3 +30,12 @@ export const Hours = [
   { value: 17.5, label: '17:30' },
   { value: 18, label: '18:00' },
 ]
+
+export interface Schedule {
+  startTime: number | null
+  endTime: number | null
+}
+
+export interface FilteredDateItem {
+  [key: number]: Schedule
+}

@@ -23,12 +23,18 @@ export const ServiceSchema = z.object({
 
 export const AvailabilitySchema = z.object({
   professionalId: z.string().cuid(),
-  1: z.tuple([z.string().nullable(), z.string().nullable()]),
-  2: z.tuple([z.string().nullable(), z.string().nullable()]),
-  3: z.tuple([z.string().nullable(), z.string().nullable()]),
-  4: z.tuple([z.string().nullable(), z.string().nullable()]),
-  5: z.tuple([z.string().nullable(), z.string().nullable()]),
-  6: z.tuple([z.string().nullable(), z.string().nullable()]),
+  monStartAt: z.number().optional().nullable(),
+  monEndAt: z.number().optional().nullable(),
+  tueStartAt: z.number().optional().nullable(),
+  tueEndAt: z.number().optional().nullable(),
+  wedStartAt: z.number().optional().nullable(),
+  wedEndAt: z.number().optional().nullable(),
+  thuStartAt: z.number().optional().nullable(),
+  thuEndAt: z.number().optional().nullable(),
+  friStartAt: z.number().optional().nullable(),
+  friEndAt: z.number().optional().nullable(),
+  satStartAt: z.number().optional().nullable(),
+  satEndAt: z.number().optional().nullable(),
 })
 
 export const AppointmentSchema = z.object({

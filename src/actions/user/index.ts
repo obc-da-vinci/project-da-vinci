@@ -3,9 +3,10 @@
 import { prisma } from '@/lib/prisma'
 import { ServiceSchema } from '@/lib/schemas'
 import { AvailabilityFormState, ServiceFormState } from '@/lib/states'
-import { WeekDayAvailability } from '@/lib/types'
-import { clearValue } from '@/utils'
+import { FilteredDateItem } from '@/lib/types'
+import { clearValue, extractData, isValidFormData } from '@/utils'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 // Adicionar um novo serviço.
 export async function upsertService(
@@ -47,7 +48,8 @@ export async function upsertService(
     }
   }
 
-  return { success: true, errors: {} }
+  revalidatePath('/services')
+  redirect('/services')
 }
 
 // Atualizar um serviço existente.
@@ -82,43 +84,54 @@ export async function getAvailability(professionalId: string) {
 
 // criar disponibilidade
 export async function createAvailability(
-  availability: WeekDayAvailability,
-  professionalId: string,
-) {
-  await Promise.all(
-    Object.entries(availability).map(async ([key, value]) => {
-      const dayOfWeek = Number(key)
-      const startTime = value.startAt ?? 0
-      const endTime = value.endAt ?? 0
+  formState: AvailabilityFormState,
+  formData: FormData,
+): Promise<AvailabilityFormState> {
+  const professionalId = String(formData.get('professionalId'))
 
-      const existingAvailability = await prisma.availability.findFirst({
-        where: { professionalId, dayOfWeek },
-      })
+  if (!professionalId) return { errors: { _form: 'Unauthorized' } }
 
-      if (existingAvailability) {
-        await prisma.availability.update({
-          where: { id: existingAvailability.id },
-          data: {
-            dayOfWeek,
-            startTime,
-            endTime,
-            professionalId,
-          },
-        })
-      } else {
-        await prisma.availability.create({
-          data: {
-            dayOfWeek,
-            startTime,
-            endTime,
-            professionalId,
-          },
-        })
-      }
+  const data = extractData(formData)
+
+  const { isValid, message } = isValidFormData(data)
+
+  if (!isValid) {
+    return { errors: { _form: message } }
+  }
+
+  const filteredDate = data.filter((day) => {
+    const { startTime, endTime } = Object.values(day)[0]
+    return startTime && endTime
+  })
+
+  const promises = []
+
+  promises.push(
+    prisma.availability.deleteMany({
+      where: { professionalId },
     }),
   )
 
+  for (const item of filteredDate) {
+    const dayOfWeek = parseInt(Object.keys(item)[0])
+    const schedules = item[dayOfWeek]
+
+    promises.push(
+      prisma.availability.create({
+        data: {
+          dayOfWeek,
+          startTime: schedules.startTime,
+          endTime: schedules.endTime,
+          professionalId,
+        },
+      }),
+    )
+  }
+
+  await Promise.all(promises)
+
   revalidatePath('/availability')
+  redirect('/availability')
 }
 
 // obter lista de serviços

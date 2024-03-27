@@ -1,20 +1,24 @@
 'use client'
 
-import { useAvailability } from '@/hooks/useAvailability'
-import { Button } from '@nextui-org/react'
-import { SyntheticEvent, useState } from 'react'
 import WeekdayButton from './weekday-button'
+import { useEffect, useState } from 'react'
+import { useFormState } from 'react-dom'
 import { actions } from '@/actions'
-import { WeekDayAvailability } from '@/lib/types'
+import ButtonFormSubmit from './forms/button-form-submit'
+import { Availability } from '@prisma/client'
+
+// TODO: Puxar as informações do banco
 
 export default function SetAvailability({
   professionalId,
+  availability,
 }: {
   professionalId: string
+  availability: Availability[]
 }) {
-  const { availability, handleToggleDay, handleTimeChange } = useAvailability()
-  const [errorMessage, setErrorMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [formState, action] = useFormState(actions.user.createAvailability, {
+    errors: {},
+  })
 
   const [mon, setMon] = useState(false)
   const [tue, setTue] = useState(false)
@@ -23,57 +27,26 @@ export default function SetAvailability({
   const [fri, setFri] = useState(false)
   const [sat, setSat] = useState(false)
 
-  const handleSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault()
+  const monActive = availability.filter((day) => day.dayOfWeek === 1)
+  const tueActive = availability.filter((day) => day.dayOfWeek === 2)
+  const wedActive = availability.filter((day) => day.dayOfWeek === 3)
+  const thuActive = availability.filter((day) => day.dayOfWeek === 4)
+  const friActive = availability.filter((day) => day.dayOfWeek === 5)
+  const satActive = availability.filter((day) => day.dayOfWeek === 6)
 
-    if (Object.entries(availability).length === 0) {
-      return setErrorMessage('Select a date at least one day.')
-    }
-
-    const hasConflict = checkForConflicts(availability)
-
-    if (!hasConflict) {
-      try {
-        setLoading(true)
-        await actions.user.createAvailability(availability, professionalId)
-      } catch (e) {
-        if (e instanceof Error) {
-          setErrorMessage(e.message)
-        }
-      } finally {
-        setLoading(false)
-      }
-    }
-  }
-
-  const checkForConflicts = (availability: WeekDayAvailability): boolean => {
-    for (const dayAvailability of Object.values(availability)) {
-      const startAt = dayAvailability.startAt
-      const endAt = dayAvailability.endAt
-
-      if (!startAt || !endAt) {
-        setErrorMessage(
-          'Please provide the required information as the form cannot be left empty.',
-        )
-        return true
-      }
-
-      if (startAt >= endAt) {
-        setErrorMessage(
-          'Double check the entry values. Start time cannot be greater than end time.',
-        )
-        return true
-      }
-    }
-
-    setErrorMessage('')
-    return false
-  }
+  useEffect(() => {
+    monActive.length > 0 && setMon(true)
+    tueActive.length > 0 && setTue(true)
+    wedActive.length > 0 && setWed(true)
+    thuActive.length > 0 && setThu(true)
+    friActive.length > 0 && setFri(true)
+    satActive.length > 0 && setSat(true)
+  }, [])
 
   return (
     <div className="flex flex-col items-center justify-center">
       <form
-        onSubmit={handleSubmit}
+        action={action}
         className="flex w-full max-w-lg flex-col rounded-lg border-2 p-2 shadow-md"
       >
         <span className="my-4 text-center text-neutral-600">
@@ -83,53 +56,51 @@ export default function SetAvailability({
         <WeekdayButton
           isActive={mon}
           onClick={() => setMon(!mon)}
-          weekDay={1}
-          handleToggleDay={handleToggleDay}
-          handleTimeChange={handleTimeChange}
+          weekDay={'mon'}
+          startTime={monActive[0]?.startTime}
+          endTime={monActive[0]?.endTime}
         />
         <WeekdayButton
           isActive={tue}
           onClick={() => setTue(!tue)}
-          weekDay={2}
-          handleToggleDay={handleToggleDay}
-          handleTimeChange={handleTimeChange}
+          weekDay={'tue'}
+          startTime={tueActive[0]?.startTime}
+          endTime={tueActive[0]?.endTime}
         />
         <WeekdayButton
           isActive={wed}
           onClick={() => setWed(!wed)}
-          weekDay={3}
-          handleToggleDay={handleToggleDay}
-          handleTimeChange={handleTimeChange}
+          weekDay={'wed'}
+          startTime={wedActive[0]?.startTime}
+          endTime={wedActive[0]?.endTime}
         />
         <WeekdayButton
           isActive={thu}
           onClick={() => setThu(!thu)}
-          weekDay={4}
-          handleToggleDay={handleToggleDay}
-          handleTimeChange={handleTimeChange}
+          weekDay={'thu'}
+          startTime={thuActive[0]?.startTime}
+          endTime={thuActive[0]?.endTime}
         />
         <WeekdayButton
           isActive={fri}
           onClick={() => setFri(!fri)}
-          weekDay={5}
-          handleToggleDay={handleToggleDay}
-          handleTimeChange={handleTimeChange}
+          weekDay={'fri'}
+          startTime={friActive[0]?.startTime}
+          endTime={friActive[0]?.endTime}
         />
         <WeekdayButton
           isActive={sat}
           onClick={() => setSat(!sat)}
-          weekDay={6}
-          handleToggleDay={handleToggleDay}
-          handleTimeChange={handleTimeChange}
+          weekDay={'sat'}
+          startTime={satActive[0]?.startTime}
+          endTime={satActive[0]?.endTime}
         />
-        {errorMessage && (
+        {formState?.errors._form && (
           <p className="mb-4 rounded-lg border border-red-400 bg-red-200 p-1.5 text-red-700 shadow">
-            {errorMessage}
+            {formState.errors._form}
           </p>
         )}
-        <Button type="submit" color="primary" isLoading={loading}>
-          Save
-        </Button>
+        <ButtonFormSubmit title="Save" color="primary" />
       </form>
     </div>
   )

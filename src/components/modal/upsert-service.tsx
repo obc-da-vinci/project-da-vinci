@@ -27,7 +27,6 @@ export default function UpsertServiceModal({
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [formState, action] = useFormState(actions.user.upsertService, {
-    success: false,
     errors: {},
   })
 
@@ -42,11 +41,6 @@ export default function UpsertServiceModal({
             <form action={action}>
               <ModalHeader className="flex flex-col gap-1">
                 Add new service
-                {formState?.success && (
-                  <span className="text-center text-sm font-medium text-emerald-500">
-                    Service successfully added!
-                  </span>
-                )}
               </ModalHeader>
               <ModalBody>
                 <input type="hidden" name="serviceId" value={service?.id} />

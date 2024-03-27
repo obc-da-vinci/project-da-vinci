@@ -1,88 +1,57 @@
-import { Hours, WeekDay } from '@/lib/types'
-import { Select, SelectItem } from '@nextui-org/react'
+import { Hours } from '@/lib/types'
+
+type weekDay = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat'
 
 interface Props {
   isActive: boolean
   onClick: () => void
-  weekDay: WeekDay
-  handleToggleDay: (day: WeekDay) => void
-  handleTimeChange: ({
-    day,
-    startAt,
-    endAt,
-  }: {
-    day: WeekDay
-    startAt?: number
-    endAt?: number
-  }) => void
+  weekDay: weekDay
+  startTime?: number
+  endTime?: number
 }
 
 export default function WeekdayButton({
   isActive,
   onClick,
   weekDay,
-  handleToggleDay,
-  handleTimeChange,
+  startTime,
+  endTime,
 }: Props) {
-  const weekDayMapping = (weekDay: WeekDay) => {
-    const map = {
-      1: 'Mon',
-      2: 'Tue',
-      3: 'Wed',
-      4: 'Thu',
-      5: 'Fri',
-      6: 'Sat',
-    }
-    return map[weekDay]
-  }
-
-  const handleClick = () => {
-    onClick()
-    handleToggleDay(weekDay)
-  }
-
   return (
     <div className="mb-3 flex items-stretch gap-2">
       <button
         type="button"
-        onClick={handleClick}
+        onClick={onClick}
         className={`w-28 rounded-lg border-2 ${isActive && 'bg-blue-500 text-white'}`}
       >
-        {weekDayMapping(weekDay)}
+        {weekDay.charAt(0).toUpperCase().concat(weekDay.slice(1))}
       </button>
-      <Select
-        onChange={(e) =>
-          handleTimeChange({
-            day: weekDay,
-            startAt: parseFloat(e.target.value),
-          })
-        }
-        label="Start at"
-        className="flex-1 font-medium"
-        variant="bordered"
-        isDisabled={!isActive}
+      <select
+        defaultValue={startTime}
+        disabled={!isActive}
+        name={`${weekDay}StartAt`}
+        className="flex-1 rounded-lg border p-2 font-medium"
       >
+        <option value="" selected disabled>
+          Start at
+        </option>
         {Hours.map((hour) => (
-          <SelectItem key={hour.value} value={hour.value}>
-            {hour.label}
-          </SelectItem>
+          <option value={hour.value}>{hour.label}</option>
         ))}
-      </Select>
-      <Select
-        onChange={(e) =>
-          handleTimeChange({ day: weekDay, endAt: parseFloat(e.target.value) })
-        }
-        label="End at"
-        className="flex-1 font-medium"
-        variant="bordered"
-        isDisabled={!isActive}
+      </select>
+      <select
+        defaultValue={endTime}
+        disabled={!isActive}
+        name={`${weekDay}EndAt`}
+        className="flex-1 rounded-lg border p-2 font-medium"
       >
+        <option value="" selected disabled>
+          End at
+        </option>
         {Hours.map((hour) => (
-          <SelectItem key={hour.value} value={hour.value}>
-            {hour.label}
-          </SelectItem>
+          <option value={hour.value}>{hour.label}</option>
         ))}
-      </Select>
+      </select>
     </div>
   )
 }
