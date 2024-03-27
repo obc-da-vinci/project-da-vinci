@@ -125,6 +125,5 @@ export async function openSessionToken(token: string) {
 }
 
 export async function endSession() {
-  console.log('finalizando a sessao')
   return cookies().delete('obc-da-vinci')
 }
