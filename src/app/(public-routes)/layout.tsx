@@ -12,7 +12,7 @@ export default async function PublicLayout({
 
   return (
     <>
-      <Navbar />
+      <Navbar authenticated={!!user?.email} />
       <div className="container mx-auto max-w-[96%] pt-6">{children}</div>
     </>
   )
