@@ -36,7 +36,9 @@ export default function WeekdayButton({
           Start at
         </option>
         {Hours.map((hour) => (
-          <option value={hour.value}>{hour.label}</option>
+          <option key={hour.value} value={hour.value}>
+            {hour.label}
+          </option>
         ))}
       </select>
       <select
@@ -49,7 +51,9 @@ export default function WeekdayButton({
           End at
         </option>
         {Hours.map((hour) => (
-          <option value={hour.value}>{hour.label}</option>
+          <option key={hour.value} value={hour.value}>
+            {hour.label}
+          </option>
         ))}
       </select>
     </div>
