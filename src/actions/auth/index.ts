@@ -6,7 +6,7 @@ import {
   RegisterProfessionalSchema,
 } from '@/lib/schemas'
 import { ProfessionalFormState } from '@/lib/states'
-import { CapitalizeString } from '@/utils'
+import { capitalizeString } from '@/utils'
 import { Professional } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 import * as jose from 'jose'
@@ -28,7 +28,7 @@ export async function registerProfessional(
     return { errors: parsed.error.flatten().fieldErrors }
   }
 
-  const nameCaptalized = CapitalizeString(parsed.data.name)
+  const nameCaptalized = capitalizeString(parsed.data.name)
   const passwordHash = await bcrypt.hash(parsed.data.password, 10)
 
   try {
