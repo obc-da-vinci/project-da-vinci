@@ -39,3 +39,17 @@ export interface Schedule {
 export interface FilteredDateItem {
   [key: number]: Schedule
 }
+
+export interface ProfessionalWithAvailability {
+  Availability: {
+    id: string
+    professionalId: string
+    dayOfWeek: number
+    startTime: number
+    endTime: number
+  }[]
+  id: string
+  name: string
+  email: string
+  password: string
+}

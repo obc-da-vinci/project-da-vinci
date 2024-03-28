@@ -5,6 +5,7 @@ import { AppointmentFormState } from '@/lib/states'
 
 export async function getProfessionals() {
   return prisma.professional.findMany({
+    include: { Availability: true },
     orderBy: { name: 'asc' },
   })
 }
@@ -21,6 +22,7 @@ export async function getProfessionalAvailability(professionalId: string) {
   return prisma.availability.findMany({
     where: { professionalId },
     include: { professional: { select: { name: true } } },
+    orderBy: { dayOfWeek: 'asc' },
   })
 }
 

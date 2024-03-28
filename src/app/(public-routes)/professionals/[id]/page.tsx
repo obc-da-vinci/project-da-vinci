@@ -14,7 +14,7 @@ export default async function ProfessionalAvailabilityPage({
   return (
     <div>
       <PageTitle title={`Schedule an appointment with ${professionalName}`} />
-      <h1>{params.id}</h1>
+      {JSON.stringify(availability, null, 2)}
     </div>
   )
 }

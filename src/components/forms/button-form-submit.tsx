@@ -8,6 +8,7 @@ interface Props {
   wFull?: boolean
   rounded?: boolean
   color?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
+  size?: 'sm' | 'md' | 'lg'
 }
 
 export default function ButtonFormSubmit({
@@ -15,6 +16,7 @@ export default function ButtonFormSubmit({
   wFull,
   color,
   rounded,
+  size,
 }: Props) {
   const { pending } = useFormStatus()
 
@@ -23,6 +25,7 @@ export default function ButtonFormSubmit({
       type="submit"
       isLoading={pending}
       color={color}
+      size={size}
       className={`${wFull && 'w-full'} ${rounded && 'rounded-full'}`}
     >
       {title}
