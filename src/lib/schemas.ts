@@ -38,8 +38,13 @@ export const AvailabilitySchema = z.object({
 })
 
 export const AppointmentSchema = z.object({
-  date: z.string().min(1, 'Please enter a date.'),
-  startAt: z.number().min(0).max(24),
-  endAt: z.number().min(0).max(24),
-  textMessage: z.string().max(100, 'Exceeded the 100-character limit.'),
+  dateSelected: z.string().min(1, 'Please selected a date available.'),
+  hourSelected: z.string().min(1, 'Please selected a time available.'),
+  name: z.string().min(1, 'Your name is required.'),
+  email: z.string().email('The email address provided is invalid.'),
+  phone: z.string().min(1, 'Your telephone number is required.'),
+  textMessage: z
+    .string()
+    .max(100, 'Exceeded the 100-character limit.')
+    .optional(),
 })

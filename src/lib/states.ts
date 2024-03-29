@@ -27,6 +27,11 @@ export interface AvailabilityFormState {
 
 export interface AppointmentFormState {
   errors: {
+    dateSelected?: string[]
+    hourSelected?: string[]
+    name?: string[]
+    email?: string[]
+    phone?: string[]
     textMessage?: string[]
     _form?: string
   }

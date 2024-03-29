@@ -1,7 +1,6 @@
 import { ProfessionalWithAvailability } from '@/lib/types'
-import { Avatar, Button } from '@nextui-org/react'
+import { Avatar } from '@nextui-org/react'
 import { ReactNode } from 'react'
-import Link from 'next/link'
 import ButtonRequestAppointment from '../button-request-appointment'
 
 function Header({ name, email }: { name: string; email: string }) {
