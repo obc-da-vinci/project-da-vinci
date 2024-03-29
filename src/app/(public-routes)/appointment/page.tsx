@@ -10,8 +10,10 @@ export default async function AppointmentPage({ searchParams }: Props) {
   const goBack = searchParams.back
   const professionalId = searchParams.id
 
-  const availability =
-    await actions.client.getProfessionalAvailability(professionalId)
+  const [availability, services] = await Promise.all([
+    actions.client.getProfessionalAvailability(professionalId),
+    actions.client.getProfessionalServices(professionalId),
+  ])
 
   const availableDays = availability.map((item) => item.dayOfWeek)
 
@@ -37,9 +39,19 @@ export default async function AppointmentPage({ searchParams }: Props) {
   return (
     <div>
       <PreviousButton path={goBack} />
-      <AppointmentForm dateOptions={dateOptions} />
-      {JSON.stringify(availability[0].startTime)}
-      {JSON.stringify(availability[0].endTime)}
+      {services.length >= 1 ? (
+        <AppointmentForm
+          professionalId={professionalId}
+          professionalServices={services}
+          dateOptions={dateOptions}
+          redirect={goBack}
+        />
+      ) : (
+        <span>
+          The selected professional has not yet made any services available on
+          the platform.
+        </span>
+      )}
     </div>
   )
 }

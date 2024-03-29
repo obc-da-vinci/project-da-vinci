@@ -29,6 +29,7 @@ export interface AppointmentFormState {
   errors: {
     dateSelected?: string[]
     hourSelected?: string[]
+    service?: string[]
     name?: string[]
     email?: string[]
     phone?: string[]

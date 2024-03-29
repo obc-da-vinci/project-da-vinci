@@ -38,6 +38,8 @@ export const AvailabilitySchema = z.object({
 })
 
 export const AppointmentSchema = z.object({
+  professionalId: z.string().cuid(),
+  service: z.string().min(1, 'Please selected a service available.').cuid(),
   dateSelected: z.string().min(1, 'Please selected a date available.'),
   hourSelected: z.string().min(1, 'Please selected a time available.'),
   name: z.string().min(1, 'Your name is required.'),
@@ -47,4 +49,5 @@ export const AppointmentSchema = z.object({
     .string()
     .max(100, 'Exceeded the 100-character limit.')
     .optional(),
+  redirect: z.string().optional().default('/'),
 })

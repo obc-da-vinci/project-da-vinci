@@ -5,12 +5,22 @@ import ButtonFormSubmit from './button-form-submit'
 import { ReactNode } from 'react'
 import { useFormState } from 'react-dom'
 import { actions } from '@/actions'
+import { Hours } from '@/lib/types'
+import { Services } from '@prisma/client'
 
 interface Props {
+  professionalId: string
+  professionalServices: Services[]
   dateOptions: Date[]
+  redirect: string
 }
 
-export default function AppointmentForm({ dateOptions }: Props) {
+export default function AppointmentForm({
+  professionalId,
+  professionalServices,
+  dateOptions,
+  redirect,
+}: Props) {
   const [formState, action] = useFormState(actions.client.createAppointment, {
     errors: {},
   })
@@ -37,6 +47,8 @@ export default function AppointmentForm({ dateOptions }: Props) {
       action={action}
       className="container mx-auto space-y-3 rounded-xl border p-5 shadow"
     >
+      <input type="hidden" name="redirect" value={redirect} />
+      <input type="hidden" name="professionalId" value={professionalId} />
       <Title title="Request appointment" />
       <Wrapper>
         <Select
@@ -57,7 +69,24 @@ export default function AppointmentForm({ dateOptions }: Props) {
           isInvalid={!!formState?.errors.hourSelected}
           errorMessage={formState?.errors.hourSelected}
         >
-          <SelectItem key={1}>item 1</SelectItem>
+          {Hours.map((hour) => (
+            <SelectItem key={hour.value} value={hour.value}>
+              {hour.label}
+            </SelectItem>
+          ))}
+        </Select>
+        <Select
+          name="service"
+          label="What service would you like?"
+          variant="bordered"
+          isInvalid={!!formState?.errors.service}
+          errorMessage={formState?.errors.service}
+        >
+          {professionalServices.map((service) => (
+            <SelectItem key={service.id} value={service.id}>
+              {service.serviceName} - {service.price}
+            </SelectItem>
+          ))}
         </Select>
       </Wrapper>
       <Title title="Personal information" />
