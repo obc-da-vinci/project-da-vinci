@@ -1,7 +1,8 @@
 import { ProfessionalWithAvailability } from '@/lib/types'
-import { Avatar } from '@nextui-org/react'
+import { Avatar, Button } from '@nextui-org/react'
 import { ReactNode } from 'react'
-import RequestAppointmentModal from '../modal/request-appointment-modal'
+import Link from 'next/link'
+import ButtonRequestAppointment from '../button-request-appointment'
 
 function Header({ name, email }: { name: string; email: string }) {
   return (
@@ -78,7 +79,12 @@ export default function RenderListProfessionals({
           <Availability
             dayOfWeek={p.Availability.map((day) => day.dayOfWeek)}
           />
-          <RequestAppointmentModal />
+          <ButtonRequestAppointment
+            href={{
+              pathname: '/appointment',
+              query: { back: '/professionals', id: p.id },
+            }}
+          />
         </Card>
       ))}
     </div>
