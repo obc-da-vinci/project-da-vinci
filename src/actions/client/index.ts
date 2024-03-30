@@ -4,7 +4,6 @@ import { prisma } from '@/lib/prisma'
 import { AppointmentSchema } from '@/lib/schemas'
 import { AppointmentFormState } from '@/lib/states'
 import { sendMail } from '@/service/sendMail'
-import { parseDate } from '@/utils'
 import { redirect } from 'next/navigation'
 
 export async function getProfessionals() {
@@ -59,7 +58,9 @@ export async function createAppointment(
     return { errors: parsed.error.flatten().fieldErrors }
   }
 
-  const date = parseDate(parsed.data.dateSelected)
+  const dateSelected = parsed.data.dateSelected
+  const timestamp = parseInt(dateSelected)
+  const date = isNaN(timestamp) ? new Date(dateSelected) : new Date(timestamp)
 
   const mailOptions = {
     from: {
@@ -91,7 +92,9 @@ export async function createAppointment(
     ])
   } catch (e) {
     if (e instanceof Error) {
-      return { errors: { _form: 'Unable to complete the appointment.' } }
+      return {
+        errors: { _form: 'Unable to complete the appointment.' + e.message },
+      }
     }
   }
 

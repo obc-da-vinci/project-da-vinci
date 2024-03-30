@@ -3,7 +3,6 @@
 import { prisma } from '@/lib/prisma'
 import { ServiceSchema } from '@/lib/schemas'
 import { AvailabilityFormState, ServiceFormState } from '@/lib/states'
-import { FilteredDateItem } from '@/lib/types'
 import { clearValue, extractData, isValidFormData } from '@/utils'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -43,8 +42,8 @@ export async function upsertService(
       },
     })
   } catch (e) {
-    if (e) {
-      return { errors: { _form: 'An error ocurred.' } }
+    if (e instanceof Error) {
+      return { errors: { _form: e.message } }
     }
   }
 

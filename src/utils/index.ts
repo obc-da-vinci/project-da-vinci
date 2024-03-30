@@ -99,29 +99,3 @@ export const isValidFormData = (data: Data) => {
 
   return { isValid: true, message: '' }
 }
-
-export const parseDate = (date: string) => {
-  const months: { [key: string]: number } = {
-    January: 0,
-    February: 1,
-    March: 2,
-    April: 3,
-    May: 4,
-    June: 5,
-    July: 6,
-    August: 7,
-    September: 8,
-    October: 9,
-    November: 10,
-    December: 11,
-  }
-
-  const parts = date.split(', ')
-  const dayAndMonth = parts[1].split(' ')
-  const day = parseInt(dayAndMonth[1])
-  const month = months[dayAndMonth[0]]
-
-  const year = new Date().getFullYear()
-
-  return new Date(year, month, day)
-}

@@ -59,7 +59,13 @@ export default function AppointmentForm({
           errorMessage={formState?.errors.dateSelected}
         >
           {dateOptions.map((date) => (
-            <SelectItem key={date.getTime()}>{formatDate(date)}</SelectItem>
+            <SelectItem
+              key={date.getTime()}
+              value={date.getTime()}
+              textValue={formatDate(date)}
+            >
+              {formatDate(date)}
+            </SelectItem>
           ))}
         </Select>
         <Select
@@ -70,7 +76,11 @@ export default function AppointmentForm({
           errorMessage={formState?.errors.hourSelected}
         >
           {Hours.map((hour) => (
-            <SelectItem key={hour.value} value={hour.value}>
+            <SelectItem
+              key={hour.value}
+              value={hour.value}
+              textValue={hour.label}
+            >
               {hour.label}
             </SelectItem>
           ))}
@@ -83,8 +93,12 @@ export default function AppointmentForm({
           errorMessage={formState?.errors.service}
         >
           {professionalServices.map((service) => (
-            <SelectItem key={service.id} value={service.id}>
-              {service.serviceName} - {service.price}
+            <SelectItem
+              key={service.id}
+              value={service.id}
+              textValue={`${service.serviceName} - $ ${service.price}`}
+            >
+              {service.serviceName} - $ {service.price}
             </SelectItem>
           ))}
         </Select>
