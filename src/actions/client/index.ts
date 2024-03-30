@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma'
 import { AppointmentSchema } from '@/lib/schemas'
 import { AppointmentFormState } from '@/lib/states'
+import { sendMail } from '@/service/sendMail'
 import { parseDate } from '@/utils'
 import { redirect } from 'next/navigation'
 
@@ -60,6 +61,16 @@ export async function createAppointment(
 
   const date = parseDate(parsed.data.dateSelected)
 
+  const mailOptions = {
+    from: {
+      name: 'Platform Vinci Sphere',
+      address: process.env.EMAIL_USER!,
+    },
+    to: parsed.data.email,
+    subject: 'Appointment completed successfully ✅',
+    text: `We have received your request to schedule the service ${parsed.data.service} on the day ${date.toLocaleDateString('en-US', { dateStyle: 'long' })} and time ${parsed.data.hourSelected}, you will receive an email when the professional accepts the request.`,
+  }
+
   try {
     await Promise.all([
       prisma.appointments.create({
@@ -75,12 +86,8 @@ export async function createAppointment(
           textMessage: parsed.data.textMessage,
           servicesId: parsed.data.service,
         },
-
-        /**
-         * TODO: enviar e-mail para o client: Voce agendou um horario
-         * com o fulano de tal, no dia tal, aguarde a confirmação.
-         */
       }),
+      sendMail(mailOptions),
     ])
   } catch (e) {
     if (e instanceof Error) {
