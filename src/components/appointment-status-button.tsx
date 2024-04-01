@@ -1,21 +1,29 @@
 'use client'
 
 interface Props {
-  id: string
   status: 'ACCEPT' | 'REJECTED'
 }
 
-export default function ButtonAppointmentStatus({ id, status }: Props) {
-  // const handleChange = async ({ id, status }: Props) => {
-  //   const response = await changeStatusAppointments({ id, status })
-  //   alert(JSON.stringify(response, null, 2))
-  // }
-
+export default function ButtonAppointmentStatus({ status }: Props) {
   switch (status) {
     case 'ACCEPT':
-      return <button onClick={() => alert('implement')}>Accept</button>
+      return (
+        <button
+          onClick={() => alert('implement')}
+          className="w-full rounded-lg border bg-blue-500 p-2 font-medium text-white"
+        >
+          Accept
+        </button>
+      )
     case 'REJECTED':
-      return <button onClick={() => alert('implement')}>Rejected</button>
+      return (
+        <button
+          onClick={() => alert('implement')}
+          className="w-full rounded-lg border bg-yellow-500 p-2 font-medium text-white"
+        >
+          Rejected
+        </button>
+      )
     default:
   }
 }

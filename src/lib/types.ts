@@ -53,3 +53,14 @@ export interface ProfessionalWithAvailability {
   email: string
   password: string
 }
+
+export interface SolutionsWithProfessionalName {
+  professional: {
+    name: string
+  }
+  id: string
+  professionalId: string
+  serviceName: string
+  description: string
+  price: number
+}

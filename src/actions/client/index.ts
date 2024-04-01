@@ -17,6 +17,7 @@ export async function getProfessionals() {
 export async function getServices() {
   return prisma.services.findMany({
     orderBy: { serviceName: 'asc' },
+    include: { professional: { select: { name: true } } },
   })
 }
 
